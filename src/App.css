@@ -11,9 +11,11 @@ html {
 .final {
   padding: .5rem;
   border: solid black 1px;
-  width: 50vw;
-  height: 20vh;
   font-size: 1.5rem;
+}
+
+select {
+  height: 1.5rem;
 }
 
 legend {
@@ -28,19 +30,4 @@ label {
 input {
   background-color: gainsboro;
   height: 1.5rem;
-}
-
-
-
-button {
-  background-color: hsl(128, 82%, 35%);
-  color: white;
-  padding: .5em 1em;
-  border-radius: .3em;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: hsl(128, 81%, 23%);
 }

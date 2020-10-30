@@ -2,144 +2,117 @@ import './App.css';
 import React, { useState } from 'react';
 
 
-function HandleAmountChange(e) {
-  const [amount, setAmount] = useState(0);
-  let formAmount = e.target.Amount.value;
-  setAmount(formAmount);
-}
-
-function HandleUnitChange(e) {
-  const [unit, setUnit] = useState('Select');
-  let formUnit = e.target.Select.value;
-  setUnit(formUnit);
-}
-
-function whatToConvert() {
-  
-  let unit = this.state.unit;
-  let formAmount = this.state.amount;
-
-  if (unit === 'Select') {
-    return <>
-    Select A Unit
-    </>
-  }
-  else if (unit === 'Gallons') {
-    return <>
-    {gallonsToLiters(formAmount)} Liters | {gallonsToPounds(formAmount)} Pounds of Water
-    </>
-  }
-  else if (unit === 'Liters') {
-    return <>
-    {litersToGallons(formAmount)} Gallons
-    </>
-  }
-  else if (unit === 'Inches') {
-    return <>
-    {inchesToCentimeters(formAmount)} Centimeters | {InchesToFeet()} Feet
-    </>
-  }
-  else if (unit === 'Centimeters') {
-    return <>
-    {centimetersToInches(formAmount)} Inches
-    </>
-  }
-  else if (unit === 'Feet') {
-    return <>
-    {feetToInches(formAmount)} Inches | {feetToYards(formAmount)} Yards
-    </>
-  }
-  else if (unit === 'Pounds') {
-    return <>
-    {poundsToGallons(formAmount)} Gallons | {poundsToKilograms(formAmount)} Kilograms
-    </>
-  }
-  else if (unit === 'Kilograms') {
-    return <>
-    {kilogramsToPounds(formAmount)} Pounds
-    </>
-  }
-  else if (unit === 'Yards') {
-    return <>
-    {yardsToFeet(formAmount)} Feet
-    </>
-  }
-}
-
-
-function litersToGallons(num) {
-
-  return (num * (1/3.8));
-
-};
-
-function gallonsToLiters(num) {
-
-  return (num * 3.8);
-
-};
-
-function inchesToCentimeters(num) {
-
-  return (num * 2.54);
-
-};
-
-function centimetersToInches(num) {
-
-  return (num * (1/2.54));
-
-};
-
-function gallonsToPounds(num) {
-
-  return (num * 8);
-
-};
-
-function poundsToGallons(num) {
-
-  return (num * (1/8));
-
-};
-
-function feetToInches(num) {
-
-  return (num * 12);
-
-};
-
-function InchesToFeet(num) {
-
-  return (num * (1/12));
-
-};
-
-function yardsToFeet(num) {
-
-  return (num * 3);
-
-};
-
-function feetToYards(num) {
-
-  return (num * (1/3));
-
-};
-
-function kilogramsToPounds(num) {
-
-  return (num * 2.2);
-
-};
-
-function poundsToKilograms(num) {
-
-  return (num * (1/2.2));
-
-};
-
 function App() {
+  //setup useState and initialize
+  const [amount, setAmount] = useState(0);
+  const [unit, setUnit] = useState('Select');
+
+  const HandleAmountChange = (e) => {
+    //get the amount from the form and set it to State
+    let formAmount = Number(e);
+    setAmount(formAmount);
+  }
+  
+  const HandleUnitChange = (e) => {  
+    //get which unit from form and set it to State
+    let formUnit = e;
+    setUnit(formUnit);
+  }
+  
+  const whatToConvert = () => {
+    // make sure the fields are filled in and do the calculation
+    if (unit === 'Select') {
+      return (
+      <>
+      Select A Unit
+      </>
+      )
+    }
+    // make sure there is an amount given and that it is a number
+    else if (!amount || amount === 0 || typeof amount === 'string') {
+      return (
+        <>
+        Select An Amount
+        </>
+      )
+    }
+    else if (unit === 'Gallons') {
+      // if we wanted more precise calculations, we would increast the toFixed.
+      // if we wanted to account for measurment precision, we would put in toPrecision and 
+      // have an input for the user to specify to how many significant figures they wish 
+      // the calculation to go to.
+      // I specified Pounds of Water because leaving it at just Pounds is not true for 
+      // any liquid of any other density.
+      let toLiters = Number.parseFloat(amount * 3.8).toFixed(2);
+      let toPounds = Number.parseFloat(amount * 8).toFixed(2);
+      return (
+      <>
+      { toLiters } Liters | { toPounds } Pounds of Water
+      </>
+      )
+    }
+    else if (unit === 'Liters') {
+      let toGallons = Number.parseFloat(amount * (1/3.8)).toFixed(2);
+      return (
+      <>
+      { toGallons } Gallons
+      </>
+      )
+    }
+    else if (unit === 'Inches') {
+      let toCM = Number.parseFloat(amount * 2.54).toFixed(2);
+      let toFeet = Number.parseFloat(amount * (1/12)).toFixed(2);
+      return (
+      <>
+      ({ toCM } Centimeters | ({ toFeet } Feet
+      </>
+      )
+    }
+    else if (unit === 'Centimeters') {
+      let toIn = Number.parseFloat(amount * (1/2.54)).toFixed(2);
+      return (
+      <>
+      { toIn } Inches
+      </>
+      )
+    }
+    else if (unit === 'Feet') {
+      let toIn = Number.parseFloat(amount * 12).toFixed(2);
+      let toYards = Number.parseFloat(amount * (1/3)).toFixed(2);
+      return (
+      <>
+      ({ toIn }) Inches | ({ toYards }) Yards
+      </>
+      )
+    }
+    else if (unit === 'Pounds') {
+      let toGallons = Number.parseFloat(amount * (1/8)).toFixed(2);
+      let toKG = Number.parseFloat(amount * (1/2.2)).toFixed(2);
+      return (
+      <>
+      { toGallons } Gallons | { toKG } Kilograms
+      </>
+      )
+    }
+    else if (unit === 'Kilograms') {
+      let toPounds = Number.parseFloat(amount * 2.2).toFixed(2);
+      return (
+      <>
+      { toPounds } Pounds
+      </>
+      )
+    }
+    else if (unit === 'Yards') {
+      let toFeet = Number.parseFloat(amount * 3).toFixed(2);
+      return (
+      <>
+      { toFeet } Feet
+      </>
+      )
+    }
+  }
+ 
+  
   return (
     <div className="App">
       <header>
@@ -162,7 +135,7 @@ function App() {
           </select>
           <label>Amount:</label>
           <input onChange={ev => HandleAmountChange(ev.target.value)} name='amount' id='amount'></input>
-          <button>Submit</button>
+          
         </form>
         <div className='final'>
           <h2>{whatToConvert()}</h2>
@@ -173,3 +146,23 @@ function App() {
 }
 
 export default App;
+
+
+/*
+While the directions say that there should be a field to fill in the desired 
+unit to convert to, most of the units supplied only have a single other unit 
+to convert to.  The rest only have 2 or 3, so it is much cleaner to just 
+supply them everything.  If you REALLY needed to have a desired unit, you 
+would just have another Select and event listener.  The event listener would 
+set the value to State and then there would be a check on the if else chain to 
+determine with unit to use.  You can have error handling to make sure that the 
+source unit type actually can convert to the desired unit type.
+
+The instruction said to keep this to 1 hour, which I hope you take my word for 
+that I actually did.
+
+Lastly, the elephant in the room: The instruction called for this to be made with 
+Java, not Javascript.  I'm unsure of what you have heard of me, but I do not know 
+Java.  I'm happy to learn, but until I do, javascript is all I can give you.
+Thank you for all your time.
+*/
